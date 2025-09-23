@@ -40,7 +40,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun InterfazHuerto(name: String, modifier: Modifier = Modifier) {
-    var contador by remember { mutableIntStateOf(1) }
+    var dinero by remember { mutableIntStateOf(1) }
     var faseImagen by remember { mutableIntStateOf(0) }
 
 
@@ -51,18 +51,25 @@ fun InterfazHuerto(name: String, modifier: Modifier = Modifier) {
     ) {
         //Texto puntos
         Text(
-            text = "Puntos: $contador"
+            text = "Dinero: $dinero"
         )
         //Botón sumar puntos
         Button(onClick = {
-            contador++ // suma puntos
-            faseImagen = (faseImagen + 1)
+            if (faseImagen < 2 ) {
+                faseImagen++
+            }
+
         }) {
             Text("Regar huerto")
         }
 
         //Botón vender huerto
-        Button(onClick = {}) {
+        Button(onClick = {
+            if (faseImagen == 2) {
+                faseImagen = 0
+                dinero++
+            }
+        }) {
             Text("Vender huerto")
         }
 
