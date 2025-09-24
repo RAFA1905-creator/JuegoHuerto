@@ -35,7 +35,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        // Invocar la función para reproducir música en bucle
         mediaPlayer = musica(this, R.raw.cancion)
 
         setContent {
@@ -57,6 +56,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
+//Función interfaz del juego
 fun InterfazHuerto(name: String, modifier: Modifier = Modifier) {
     var dinero by remember { mutableIntStateOf(1) }
     var faseImagen by remember { mutableIntStateOf(0) }
