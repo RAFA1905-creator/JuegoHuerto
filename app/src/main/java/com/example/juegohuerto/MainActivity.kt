@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -20,6 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.juegohuerto.ui.theme.JuegoHuertoTheme
+import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,48 +45,51 @@ fun InterfazHuerto(name: String, modifier: Modifier = Modifier) {
     var dinero by remember { mutableIntStateOf(1) }
     var faseImagen by remember { mutableIntStateOf(0) }
 
+    val imagenesPlanta = listOf(
+        R.drawable.plantafase1,
+        R.drawable.plantafase2,
+        R.drawable.plantafase3
+    )
 
-    androidx.compose.foundation.layout.Column(
+    Text(text = "Dinero: $dinero")
+
+    MostrarPlanta(
+        fase = faseImagen,
+        imagenId = imagenesPlanta[faseImagen],
+        onClickAccion = {
+            if (faseImagen < 2) {
+                faseImagen++
+            } else {
+                faseImagen = 0
+                dinero += Random.nextInt(1, 3)
+            }
+        }
+    )
+}
+
+@Composable
+fun MostrarPlanta(
+    fase: Int,
+    imagenId: Int,
+    onClickAccion: () -> Unit
+) {
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        //Texto puntos
-        Text(
-            text = "Dinero: $dinero"
-        )
-        //Botón sumar puntos
-        Button(onClick = {
-            if (faseImagen < 2 ) {
-                faseImagen++
+        Button(onClick = onClickAccion) {
+            if (fase == 2) {
+                Text("Vender planta")
+            } else {
+                Text("Regar planta")
             }
-
-        }) {
-            Text("Regar huerto")
         }
-
-        //Botón vender huerto
-        Button(onClick = {
-            if (faseImagen == 2) {
-                faseImagen = 0
-                dinero++
-            }
-        }) {
-            Text("Vender huerto")
-        }
-
-        //Imágenes
-        val imagenesPlanta = listOf(
-            R.drawable.plantafase1,
-            R.drawable.plantafase2,
-            R.drawable.plantafase3
-        )
 
         Image(
-            painter = painterResource(id = imagenesPlanta[faseImagen]),
-            contentDescription = "Planta fase ${faseImagen + 1}"
+            painter = painterResource(id = imagenId),
+            contentDescription = "Planta fase ${fase + 1}"
         )
-
     }
 }
 
